@@ -13,12 +13,6 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-# Check whether or not the directory the user entered exists 
-if [ ! -d $writeDir ]; then
-    echo "Unable to find directory: $writeDir"
-    exit 1
-fi
-
 #Make the path of the desired directory
 mkdir -p $writeDir
 
