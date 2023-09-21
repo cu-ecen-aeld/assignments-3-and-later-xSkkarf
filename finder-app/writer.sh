@@ -17,7 +17,7 @@ fi
 mkdir -p $writeDir
 
 #Create the file
-touch $(basename $writeDir)
+touch $writeFileDir
 
 #Overwriting the file data with our new data
 echo $writeStr > $writeFileDir
