@@ -67,6 +67,39 @@ bool do_exec(int count, ...)
  *
 */
 
+    char * cmd_full_path = command[0];
+
+    if(cmd_full_path==NULL){
+        printf("Command full path is empty");
+        return false;
+    }
+
+    if(cmd_full_path[0] != '/' || command[2][0] != '/'){
+        printf("Command full path is not specified\n");
+        return false;
+    }
+
+    char * cmd_args[100];
+
+
+    for(int i = 1; i < count; i++){
+        cmd_args[i-1] = command[i];
+    }
+    cmd_args[count-1] = NULL;
+
+
+    int pid = fork();
+    int status = 100;
+    int wt_ret = wait(&status);
+    wt_ret = wt_ret;
+
+    if(!pid){
+        int ret = execv(cmd_full_path, cmd_args);
+        if(ret == -1){
+            printf("execv() faild to execute\n");
+            return false;
+        }
+    }
     va_end(args);
 
     return true;
