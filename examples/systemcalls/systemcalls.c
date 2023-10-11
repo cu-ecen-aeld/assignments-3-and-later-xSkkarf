@@ -134,7 +134,48 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *
 */
 
+    char * cmd_args[100];
+
+    cmd_args[0] = getLastName(command[0]);
+
+    for(int i = 1; i < count; i++){
+        cmd_args[i] = command[i];
+    }
+    cmd_args[count] = NULL;
+
+    int kidpid;
+    int fd = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+    if (fd < 0) { perror("open"); return false; }
+    switch (kidpid = fork()) {
+        case -1: perror("fork"); return false;
+        case 0:
+            if (dup2(fd, 1) < 0){
+                 perror("dup2"); return false; 
+            }
+            close(fd);
+            execvp(command[0], cmd_args); perror("execvp"); return false;
+        default:
+            close(fd);
+            int status = 100;
+            int wt_ret = wait(&status);
+            wt_ret = wt_ret;
+            break;
+            /* do whatever the parent wants to do. */
+}
+    
     va_end(args);
 
     return true;
+}
+
+// Function to extract the last name from a path
+char* getLastName(char* path) {
+    char* lastSlash = strrchr(path, '/');
+    if (lastSlash == NULL) {
+        // No slash found, return the original path
+        return path;
+    } else {
+        // Return the part after the last slash
+        return lastSlash + 1;
+    }
 }
