@@ -5,13 +5,14 @@
 set -e
 
 OUTDIR=$1
+ARCH=arm64
 
 if [ -z "${OUTDIR}" ]; then
-    OUTDIR=/tmp/aeld
+    OUTDIR=/home/xskkarf/Desktop/GitHub/kernel
     echo "No outdir specified, using ${OUTDIR}"
 fi
 
-KERNEL_IMAGE=${OUTDIR}/Image
+KERNEL_IMAGE=${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image.gz
 INITRD_IMAGE=${OUTDIR}/initramfs.cpio.gz
 
 if [ ! -e ${KERNEL_IMAGE} ]; then
